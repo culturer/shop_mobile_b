@@ -1,0 +1,62 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="horizontal"
+    tools:context="com.culturer.procurement.page.CarFragment">
+
+    <ImageView
+        android:id="@+id/product_icon"
+        android:layout_gravity="center"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/product_name"
+            android:text="榴莲"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/product_msg"
+            android:layout_marginTop="2dp"
+            android:text="泰国进口榴莲，又大又好吃。美滋滋呀呀~"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:maxLines="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/product_price"
+                android:text="￥12.00"
+                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/buy"
+                android:text="采购"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
