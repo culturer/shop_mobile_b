@@ -1,6 +1,7 @@
 package com.culturer.procurement.page;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -51,6 +52,7 @@ public class CarFragment extends Fragment {
 	private TextView all_price1;
 	private TextView submit;
 	
+	boolean change_bg;
 	private CarAdapter adapter;
 	
 	public CarFragment() {
@@ -91,30 +93,9 @@ public class CarFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				
-				View contentView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order,null);
-				
-				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-				final AlertDialog dialog = builder.setTitle("提交订单")
-						.setView(contentView)
-						.create();
-				dialog.show();
-				
-				final EditText receiver = contentView.findViewById(R.id.receiver);
-				final EditText phone = contentView.findViewById(R.id.phone);
-				final EditText address = contentView.findViewById(R.id.address);
-				final EditText msg = contentView.findViewById(R.id.msg);
-				Button commit = contentView.findViewById(R.id.commit);
-				
-				commit.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						submit(phone.getText().toString(),receiver.getText().toString(),address.getText().toString(),msg.getText().toString());
-						Log.i(TAG, "commit msg : "+phone.getText().toString()+receiver.getText().toString()+address.getText().toString()+msg.getText().toString());
-						dialog.dismiss();
-					}
-				});
-				
-				
+				//跳转到提交订单页面
+				Intent intent = new Intent(getContext(),CommitOrderActivity.class);
+				startActivity(intent);
 			}
 		});
 		return contentView;
@@ -127,103 +108,10 @@ public class CarFragment extends Fragment {
 		setAllPrice();
 	}
 	
-	private void submit(String phone,String receiver,String address,String remark){
-		OrderBean orderBean = new OrderBean();
-		orderBean.setStatus(100);
-		orderBean.setTime(TimeUtil.getCurrentTime());
-		
-		OrderBean.ConfirmOrderBean.TmpOrderBean tmpOrderBean = new OrderBean.ConfirmOrderBean.TmpOrderBean();
-		tmpOrderBean.setCreateTime(TimeUtil.getCurrentTime());
-		tmpOrderBean.setOrderNum("U"+Cache.user.getUser().getId()+"T"+System.currentTimeMillis());
-		tmpOrderBean.setUserId(Cache.user.getUser().getId());
-		tmpOrderBean.setPhone(phone);
-		try {
-			tmpOrderBean.setRemark(Code.encode(remark));
-			tmpOrderBean.setReceiver(Code.encode(receiver));
-			tmpOrderBean.setAddress(Code.encode(address));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-
-		
-		List<ProductBean.ProductsBean> productsBeans = new ArrayList<>();
-		List<CarBean> carBeans = new ArrayList<>();
-		for ( CarBean carBean: Cache.cars) {
-			if (carBean.isSelected()){
-				productsBeans.add(carBean.getProductsBean());
-			}else {
-				carBeans.add(carBean);
-			}
-		}
-		Cache.cars = carBeans;
-		EventBus.getDefault().post(new CarEvent());
-		
-		OrderBean.ConfirmOrderBean confirmOrderBean = new OrderBean.ConfirmOrderBean();
-		confirmOrderBean.setTmpOrder(tmpOrderBean);
-		confirmOrderBean.setModProducts(productsBeans);
-		orderBean.setConfirmOrder(confirmOrderBean);
-		
-		Gson gson = new Gson();
-		String strProducts = gson.toJson(productsBeans);
-		String strOrderParam = gson.toJson(tmpOrderBean);
-		
-		HttpParams params = new HttpParams();
-		params.put("act","confirmOrder");
-		params.put("orderType",1);
-		params.put("products",strProducts);
-		params.put("orderParam",strOrderParam);
-		params.putHeaders("content-type","application/x-www-form-urlencoded");
-		params.putHeaders("Cookie", PreferenceUtil.getString("sessionId",""));
-		HttpCallback callback = new HttpCallback() {
-			@Override
-			public void onSuccess(String t) {
-				HttpParams params = new HttpParams();
-				params.put("act","createOrder");
-				params.put("PayType","cashPay");
-				params.putHeaders("content-type","application/x-www-form-urlencoded");
-				params.putHeaders("Cookie", PreferenceUtil.getString("sessionId",""));
-				HttpCallback callback1 = new HttpCallback() {
-					@Override
-					public void onSuccess(String t) {
-						Log.i(TAG, "create order: "+t);
-						Toast.makeText(getContext(),"提交订单成功！",Toast.LENGTH_LONG).show();
-						EventBus.getDefault().post(new OrderEvent());
-					}
-				};
-				new RxVolley.Builder()
-						.url(HOST+"/order")
-						.httpMethod(RxVolley.Method.POST) //default GET or POST/PUT/DELETE/HEAD/OPTIONS/TRACE/PATCH
-						.cacheTime(0) //default: get 5min, post 0min
-						.contentType(RxVolley.ContentType.FORM)//default FORM or JSON
-						.params(params)
-						.shouldCache(false) //default: get true, post false
-						.callback(callback1)
-						.encoding("UTF-8") //defaultr
-						.doTask();
-				
-			}
-			
-			@Override
-			public void onFailure(int errorNo, String strMsg) {
-				Log.i(TAG, "提交订单失败: "+strMsg);
-			}
-		};
-		
-		new RxVolley.Builder()
-				.url(HOST+"/order")
-				.httpMethod(RxVolley.Method.POST) //default GET or POST/PUT/DELETE/HEAD/OPTIONS/TRACE/PATCH
-				.cacheTime(0) //default: get 5min, post 0min
-				.contentType(RxVolley.ContentType.FORM)//default FORM or JSON
-				.params(params)
-				.shouldCache(false) //default: get true, post false
-				.callback(callback)
-				.encoding("UTF-8") //defaultr
-				.doTask();
-	}
 	
 	private void setAllPrice(){
-		int all_price = 0;
-		boolean change_bg = false;
+		float all_price = 0;
+		change_bg = false;
 		for (int i=0;i<Cache.cars.size();i++){
 			if (Cache.cars.get(i).isSelected()){
 				all_price=all_price+Cache.cars.get(i).getProductsBean().getStandardPrice()*Cache.cars.get(i).getProductsBean().getBuyNum();
@@ -234,10 +122,11 @@ public class CarFragment extends Fragment {
 		if (change_bg){
 			submit.setBackground(getContext().getDrawable(R.color.red));
 			submit.setTextColor(getResources().getColor(R.color.white,null));
-			
+			submit.setEnabled(true);
 		}else {
 			submit.setBackground(getContext().getDrawable(R.color.grey));
 			submit.setTextColor(getResources().getColor(R.color.black,null));
+			submit.setEnabled(false);
 		}
 	}
 	

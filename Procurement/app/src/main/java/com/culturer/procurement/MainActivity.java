@@ -1,9 +1,13 @@
 package com.culturer.procurement;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -22,6 +26,9 @@ import com.kymjs.okhttp3.OkHttpStack;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.http.RequestQueue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +38,17 @@ public class MainActivity extends AppCompatActivity {
 	private BottomNavigationView navigation;
 	
 	private PagerAdapter adapter;
+	
+	//Android6.0以上动态权限
+	//定位需要的权限
+	protected String[] needPermissions = {
+			Manifest.permission.ACCESS_COARSE_LOCATION,
+			Manifest.permission.ACCESS_FINE_LOCATION,
+			Manifest.permission.WRITE_EXTERNAL_STORAGE,
+			Manifest.permission.READ_EXTERNAL_STORAGE,
+			Manifest.permission.READ_PHONE_STATE,
+	};
+	private static final int PERMISSON_REQUESTCODE = 0;
 	
 	private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
 			= new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -79,15 +97,12 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			Window window = getWindow();
-
-//设置修改状态栏
-			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
-//设置状态栏的颜色，和你的app主题或者标题栏颜色设置一致就ok了
-			window.setStatusBarColor(getColor(R.color.black));
-		}
+		Window window = getWindow();
+		//设置修改状态栏
+		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+		//设置状态栏的颜色，和你的app主题或者标题栏颜色设置一致就ok了
+		window.setStatusBarColor(getColor(R.color.black));
+		checkPermissions(needPermissions);
 		
 		setContentView(R.layout.activity_main);
 		//使用okhttp代替httpurlconnection
@@ -112,6 +127,37 @@ public class MainActivity extends AppCompatActivity {
 		adapter.addFragment(OrderFragment.newInstance("",""));
 		viewPager.setOffscreenPageLimit(3);
 		viewPager.setAdapter(adapter);
+	}
+	
+	/**
+	 * 检查定位权限
+	 *
+	 * @param needPermissions
+	 */
+	private void checkPermissions(String[] needPermissions) {
+		List<String> needRequestPermissionList = findDeniedPermission(needPermissions);
+		if (needRequestPermissionList != null && needRequestPermissionList.size() > 0) {
+			ActivityCompat.requestPermissions(this,
+					needRequestPermissionList.toArray(new String[needRequestPermissionList.size()]),
+					PERMISSON_REQUESTCODE);
+		}
+	}
+	
+	/**
+	 * 获取集中需要申请权限的列表
+	 *
+	 * @param needPermissions
+	 * @return
+	 */
+	private List<String> findDeniedPermission(String[] needPermissions) {
+		List<String> needRequestPermissionList = new ArrayList<String>();
+		for (String permisson : needPermissions) {
+			if (ContextCompat.checkSelfPermission(this, permisson) != PackageManager.PERMISSION_GRANTED
+					|| ActivityCompat.shouldShowRequestPermissionRationale(this, permisson)) {
+				needRequestPermissionList.add(permisson);
+			}
+		}
+		return needRequestPermissionList;
 	}
 	
 }

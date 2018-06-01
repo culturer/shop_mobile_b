@@ -12,11 +12,13 @@ import com.culturer.procurement.R;
 import com.culturer.procurement.bean.ProductBean;
 import com.culturer.procurement.bean.TypeBean;
 import com.culturer.procurement.util.Cache;
+import com.culturer.procurement.util.Code;
 import com.google.gson.Gson;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
 import com.kymjs.rxvolley.client.HttpParams;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,7 +71,7 @@ public class MainFragment extends Fragment {
 		HttpParams params = new HttpParams();
 		params.put("types",0);
 		params.put("options",0);
-		
+		//获取分类列表
 		HttpCallback callback = new HttpCallback() {
 			@Override
 			public void onSuccess(String t) {
@@ -80,11 +82,16 @@ public class MainFragment extends Fragment {
 				if (typeBean!=null){
 					if (typeBean.getProductTypes()!=null){
 						
+						//获取商品列表
 						if (typeBean!=null){
 							for (int i=0;i<typeBean.getProductTypes().size();i++){
 								if (typeBean.getProductTypes().get(i)!=null){
 									types.add(typeBean.getProductTypes().get(i));
-									Log.i(TAG, "initData: addType"+typeBean.getProductTypes().get(i).getTypeName());
+									try {
+										Log.i(TAG, "initData: addType"+ Code.decode(typeBean.getProductTypes().get(i).getTypeName()));
+									} catch (UnsupportedEncodingException e) {
+										e.printStackTrace();
+									}
 								}
 							}
 						}
@@ -104,7 +111,11 @@ public class MainFragment extends Fragment {
 								@Override
 								public void onSuccess(String t) {
 									Log.i(TAG, "onSuccess: get Id "+typeBean.getProductTypes().get(finalI).getId());
-									Log.i(TAG, "onSuccess: "+t);
+									try {
+										Log.i(TAG, "获取商品列表: "+Code.decode(t));
+									} catch (UnsupportedEncodingException e) {
+										e.printStackTrace();
+									}
 									ProductBean productBean = gson.fromJson(t,ProductBean.class);
 									Cache.productBeans.add(productBean);
 									products.add(productBean);

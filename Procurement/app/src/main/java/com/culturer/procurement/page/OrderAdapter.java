@@ -29,12 +29,12 @@ public class OrderAdapter extends BaseExpandableListAdapter {
 	
 	@Override
 	public int getGroupCount() {
-		return orderList.getCount();
+		return orderList.getDataList().size();
 	}
 	
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return orderList.getDataList().get(groupPosition).getItemCount();
+		return orderList.getDataList().get(groupPosition).getOrderItems().size();
 	}
 	
 	@Override

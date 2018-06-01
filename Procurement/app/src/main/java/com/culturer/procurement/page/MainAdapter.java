@@ -36,7 +36,6 @@ public class MainAdapter extends BaseExpandableListAdapter {
 	private List<TypeBean.ProductTypesBean> types = new ArrayList<>();
 	private  List<ProductBean> products = new ArrayList<>();
 	
-	
 	Context context;
 	
 	int groupLayout = R.layout.main_group_item;
@@ -55,7 +54,17 @@ public class MainAdapter extends BaseExpandableListAdapter {
 	
 	@Override
 	public int getChildrenCount(int i) {
-		return products.get(i).getProducts().size();
+		int typeId = types.get(i).getId();
+		if (products.size()>0){
+			for (int j = 0;j<products.size();j++){
+				
+				if (products.get(j).getProducts().size()>0 && typeId == products.get(j).getProducts().get(0).getProductTypeId()){
+					return products.get(j).getProducts().size();
+				}
+				
+			}
+		}
+		return 0;
 	}
 	
 	@Override
@@ -65,17 +74,7 @@ public class MainAdapter extends BaseExpandableListAdapter {
 	
 	@Override
 	public ProductBean.ProductsBean getChild(int i, int i1) {
-		for (int i2 = 0;i2<types.size();i2++){
-			try {
-				Log.i(TAG, "getChild: type_name --- "+Code.decode(types.get(i2).getTypeName()));
-				Log.i(TAG, "getChild: "+products.size());
-				Log.i(TAG, "getChild: "+	products.get(i2).getProducts().size());
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-		}
 		int typeId = types.get(i).getId();
-
 		if (products.size()>0){
 			for (int j = 0;j<products.size();j++){
 				
@@ -134,7 +133,6 @@ public class MainAdapter extends BaseExpandableListAdapter {
 		
 		final ProductBean.ProductsBean productBean = getChild(i,i1);
 		if (productBean!=null){
-			Log.i(TAG, "getChildView: "+productBean.toString());
 			Glide.with(context)
 					.load(HOST+"/"+productBean.getCoverUrl())
 					.into(product_icon);

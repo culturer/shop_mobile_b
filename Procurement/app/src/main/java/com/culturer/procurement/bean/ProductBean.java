@@ -79,9 +79,9 @@ public class ProductBean {
 		private int ProductTypeId;
 		private int PartnerId;
 		private String Name;
-		private int Count;
-		private int Price;
-		private int StandardPrice;
+		private float Count;
+		private float Price;
+		private float StandardPrice;
 		private String Desc;
 		private String Msg;
 		private String CreateTime;
@@ -139,7 +139,7 @@ public class ProductBean {
 			this.Name = Name;
 		}
 		
-		public int getCount() {
+		public float getCount() {
 			return Count;
 		}
 		
@@ -147,7 +147,7 @@ public class ProductBean {
 			this.Count = Count;
 		}
 		
-		public int getPrice() {
+		public float getPrice() {
 			return Price;
 		}
 		
@@ -155,7 +155,7 @@ public class ProductBean {
 			this.Price = Price;
 		}
 		
-		public int getStandardPrice() {
+		public float getStandardPrice() {
 			return StandardPrice;
 		}
 		

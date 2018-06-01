@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.culturer.procurement.page.CommitOrderActivity">
+    <!--收货地址-->
+    <LinearLayout
+        android:id="@+id/order_address"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="收货人:"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/username"
+                android:layout_marginStart="20dp"
+                android:text="宋志文"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tel"
+                android:layout_marginStart="20dp"
+                android:text="18588263531"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:letterSpacing="0.2"
+            android:text="地址: 湖北省武汉市洪山区沙湖港湾13栋1单元903"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/grey"/>
+    <!--送达时间-->
+    <LinearLayout
+        android:background="@color/white"
+        android:id="@+id/aco_time"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:textSize="15dp"
+            android:text="送达时间"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/time"
+            android:layout_weight="1"
+            android:text="明日 6:00-9:00"
+            android:textSize="15dp"
+            android:textColor="#333333"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/change_time"
+            android:text="更改"
+            android:layout_marginEnd="15dp"
+            android:padding="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/grey"/>
+    <!--选择店铺-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:textSize="15dp"
+            android:text="配送店铺"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/shop"
+            android:text="点击选择"
+            android:textSize="15dp"
+            android:textColor="#333333"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/grey"/>
+    <!--优惠券-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:textSize="15dp"
+            android:text="优惠券"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/ticket"
+            android:text="点击选择"
+            android:textSize="15dp"
+            android:textColor="#333333"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/grey"/>
+    <!--购买备注-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:textSize="15dp"
+            android:text="购买备注"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/msg"
+            android:hint="输入备注"
+            android:textSize="15dp"
+            android:background="@null"
+            android:textColor="#333333"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/grey"/>
+</LinearLayout>
