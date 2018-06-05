@@ -68,12 +68,38 @@ public class OrderAdapter extends BaseExpandableListAdapter {
 		TextView order_time = gruopView.findViewById(R.id.order_time);
 		TextView group_id = gruopView.findViewById(R.id.group_id);
 		TextView all_price = gruopView.findViewById(R.id.all_price);
+		TextView tran = gruopView.findViewById(R.id.tran);
+		TextView ok = gruopView.findViewById(R.id.ok);
+		TextView back = gruopView.findViewById(R.id.back);
 		
 		OrderList.DataListBean dataListBean =  getGroup(groupPosition);
 		
 		order_time.setText(dataListBean.getOrderInfo().getCreateTime());
-		group_id.setText("订单编号:"+dataListBean.getOrderInfo().getOrderNum());
+		group_id.setText("订单编号: "+dataListBean.getOrderInfo().getOrderNum());
 		all_price.setText("金额:￥ "+dataListBean.getOrderInfo().getShouldPrice());
+		try {
+			if (Code.decode(dataListBean.getOrderInfo().getTranslateStatus()).equals("")){
+				tran.setText("物流状态: "+"未发货");
+			}else {
+				tran.setText("物流状态: "+Code.decode(dataListBean.getOrderInfo().getTranslateStatus()));
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		ok.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//确认签收
+			}
+		});
+		
+		back.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//退货
+			}
+		});
 		
 		return gruopView;
 	}
