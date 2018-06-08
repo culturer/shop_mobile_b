@@ -48,7 +48,8 @@ public class OrderFragment extends Fragment {
 	}
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(LayoutInflater inflater,
+	                         ViewGroup container,
 	                         Bundle savedInstanceState) {
 		contentView = inflater.inflate(R.layout.fragment_order, container, false);
 		list = contentView.findViewById(R.id.list);
