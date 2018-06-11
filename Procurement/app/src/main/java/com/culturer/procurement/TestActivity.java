@@ -18,20 +18,20 @@ public class TestActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test);
-		WechatPayTools.wechatPayUnifyOrder(TestActivity.this,
-				WX_APP_ID, //微信分配的APP_ID
-				WX_PARTNER_ID, //微信分配的 PARTNER_ID (商户ID)
-				WX_PRIVATE_KEY, //微信分配的 PRIVATE_KEY (私钥)
-				new WechatModel(order_id, //订单ID (唯一)
-						money, //价格
-						name, //商品名称
-						detail), //商品描述详情
-				new onRequestListener() {
-					@Override
-					public void onSuccess(String s) {}
-					
-					@Override
-					public void onError(String s) {}
-				});
+//		WechatPayTools.wechatPayUnifyOrder(TestActivity.this,
+//				WX_APP_ID, //微信分配的APP_ID
+//				WX_PARTNER_ID, //微信分配的 PARTNER_ID (商户ID)
+//				WX_PRIVATE_KEY, //微信分配的 PRIVATE_KEY (私钥)
+//				new WechatModel(order_id, //订单ID (唯一)
+//						money, //价格
+//						name, //商品名称
+//						detail), //商品描述详情
+//				new onRequestListener() {
+//					@Override
+//					public void onSuccess(String s) {}
+//
+//					@Override
+//					public void onError(String s) {}
+//				});
 	}
 }
